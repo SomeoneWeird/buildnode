@@ -1,0 +1,22 @@
+{
+  "name": "node-buildkite",
+  "version": "0.0.1",
+  "description": "Node module for Buildkite APIs",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SomeoneWeird/node-buildkite.git"
+  },
+  "author": "Adam Brady <adam@boxxen.org>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SomeoneWeird/node-buildkite/issues"
+  },
+  "homepage": "https://github.com/SomeoneWeird/node-buildkite#readme",
+  "dependencies": {
+    "request": "^2.61.0"
+  }
+}
