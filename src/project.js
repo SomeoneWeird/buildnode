@@ -1,10 +1,11 @@
 
 export default function(options, utils, modules) {
 
-  const $data  = Symbol("data");
-  const $org   = Symbol("org");
-  const $build = Symbol("build");
-  const $job   = Symbol("job");
+  const $data    = Symbol("data");
+  const $org     = Symbol("org");
+  const $build   = Symbol("build");
+  const $job     = Symbol("job");
+  const $baseURL = Symbol("baseURL");
 
   return function(org) {
 
@@ -14,16 +15,19 @@ export default function(options, utils, modules) {
         this[$data]  = data;
         this[$org]   = org;
         this[$build] = modules.build(org, this);
-        
+
         this.name = this[$data].slug;
+
+        this[$baseURL] = `organizations/${this[$org].name}/projects/${this.name}`;
       }
 
       delete(callback) {
-        utils.req("DELETE", `organizations/${this[$org].name}/projects/${this.name}`, null, callback);
+        utils.req("DELETE", this[$baseURL], null, callback);
       }
 
       getBuild(number, callback) {
-        utils.req("GET", `organizations/${this[$org].name}/projects/${this.name}/builds/${number}`, null, (err, result) => {
+        console.log(`${this[$baseURL]}/builds/${number}`);
+        utils.req("GET", `${this[$baseURL]}/builds/${number}`, null, (err, result) => {
           if(err) return callback(err);
           let build = new this[$build](result);
           let job = modules.job(org, this, build);
@@ -33,7 +37,7 @@ export default function(options, utils, modules) {
       }
 
       createBuild(data, callback) {
-        utils.req("POST", `organizations/${this[$org].name}/projects/${this.name}/builds`, data, utils.wrapResult(this[$build], callback));
+        utils.req("POST", `${this[$baseURL]}/builds`, data, utils.wrapResult(this[$build], callback));
       }
 
     }

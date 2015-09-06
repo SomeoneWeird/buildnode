@@ -5,6 +5,7 @@ export default function(options, utils, modules) {
   const $org      = Symbol("org");
   const $project  = Symbol("project");
   const $artifact = Symbol("artifact");
+  const $baseURL  = Symbol("baseURL");
 
   return function(org, project) {
 
@@ -19,22 +20,24 @@ export default function(options, utils, modules) {
         [ 'id', 'number', 'jobs', 'state', 'message', 'branch' ].forEach(k => {
           this[k] = this[$data][k];
         });
+
+        this[$baseURL] = `organizations/${this[$org].name}/projects/${this[$project].name}/builds/${this.number}`;
       }
 
       cancel(callback) {
-        utils.req("PUT", `organizations/${this[$org].name}/projects/${this[$project].name}/builds/${this.number}/cancel`, null, utils.wrapResult(this[$build], callback));
+        utils.req("PUT", `${this[$baseURL]}/cancel`, null, utils.wrapResult(this[$build], callback));
       }
 
       rebuild(callback) {
-        utils.req("PUT", `organizations/${this[$org].name}/projects/${this[$project].name}/builds/${this.number}/rebuild`, null, utils.wrapResult(this[$build], callback));
+        utils.req("PUT", `${this[$baseURL]}/rebuild`, null, utils.wrapResult(this[$build], callback));
       }
 
       listArtifacts(callback) {
-        utils.req("GET", `organizations/${this[$org].name}/projects/${this[$project].name}/builds/${this.number}/artifacts`, null, utils.wrapResult(this[$artifact], callback));
+        utils.req("GET", `${this[$baseURL]}/artifacts`, null, utils.wrapResult(this[$artifact], callback));
       }
 
       getArtifact(id, callback) {
-        utils.req("GET", `organizations/${this[$org].name}/projects/${this[$project].name}/builds/${this.number}/artifacts/${id}`, null, utils.wrapResult(this[$artifact], callback));
+        utils.req("GET", `${this[$baseURL]}/artifacts/${id}`, null, utils.wrapResult(this[$artifact], callback));
       }
 
     }

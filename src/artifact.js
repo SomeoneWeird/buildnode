@@ -6,6 +6,7 @@ export default function(options, utils, modules) {
   const $project = Symbol("project");
   const $build   = Symbol("build");
   const $job     = Symbol("job");
+  const $baseURL = Symbol("baseURL");
 
   return function(org, project, build, job) {
 
@@ -20,8 +21,9 @@ export default function(options, utils, modules) {
         [ 'id', 'job_id', 'path', 'file_size', 'sha1sum' ].forEach(k => {
           this[k] = this[$data][k];
         });
-      }
 
+        this[$baseURL] = `organizations/${this[$org].name}/projects/${this[$project].name}/builds/${this[$build].number}/artifacts/${this.id}`;
+      }
     }
 
     return Artifact;
