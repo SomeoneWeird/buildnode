@@ -7,95 +7,63 @@ Node module for Buildkite APIs
 npm install buildkite
 ```
 
-# Instatiation
+# Instantiation
 
 ## buildkite(options)
 
-
-
 ## Organisation
 
-### Properties
-
-#### name
-
-### Methods
-
-#### listProjects(callback)
-#### getProject(name, callback)
-#### createProject(data, callback)
-#### listAgents(callback)
-#### getAgent(id, callback)
-#### createAgent(name, callback)
+#### organisation.name
+#### organisation#listProjects(callback)
+#### organisation#getProject(name, callback)
+#### organisation#createProject(data, callback)
+#### organisation#listAgents(callback)
+#### organisation#getAgent(id, callback)
+#### organisation#createAgent(name, callback)
 
 ## Agent
 
-### Properties
-
-#### id
-#### name
-#### connection_state
-#### ip_address
-#### version
-#### meta_data
-
-### Methods
-
-#### top(callback)
+#### agent.id
+#### agent.name
+#### agent.connection_state
+#### agent.ip_address
+#### agent.version
+#### agent.meta_data
+#### agent#top(callback)
 
 ## Project
 
-### Properties
-
-#### name
-
-### Methods
-
-#### delete(callback)
-#### listBuilds(callback)
-#### getBuild(number, callback)
-#### createBuild(data, callback)
+#### project.name
+#### project#delete(callback)
+#### project#listBuilds(callback)
+#### project#getBuild(number, callback)
+#### project#createBuild(data, callback)
 
 ## Build
 
-### Properties
-
-#### id
-#### number
-#### jobs
-#### state
-#### message
-#### branch
-
-### Methods
-
-#### cancel(callback)
-#### rebuild(callback)
-#### listArtifacts(callback)
-#### getArtifact(id, callback)
+#### build.id
+#### build.number
+#### build.jobs
+#### build.state
+#### build.message
+#### build.branch
+#### build#cancel(callback)
+#### build#rebuild(callback)
+#### build#listArtifacts(callback)
+#### build#getArtifact(id, callback)
 
 ## Job
 
-### Properties
-
-#### id
-
-### Methods
-
-#### unblock(callback)
-#### getLog(callback)
-#### listArtifacts(callback)
+#### job.id
+#### job#unblock(callback)
+#### job#getLog(callback)
+#### job#listArtifacts(callback)
 
 ## Artifact
 
-### Properties
-
-#### id
-#### job_id
-#### path
-#### file_size
-#### sha1sum
-
-### Methods
-
-#### download(callback)
+#### artifact.id
+#### artifact.job_id
+#### artifact.path
+#### artifact.file_size
+#### artifact.sha1sum
+#### artifact#download(callback)
