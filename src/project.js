@@ -7,6 +7,8 @@ export default function(options, utils, modules) {
   const $job     = Symbol("job");
   const $baseURL = Symbol("baseURL");
 
+  const $processBuild = Symbol("processBuild");
+
   return function(org) {
 
     class Project {
@@ -18,6 +20,12 @@ export default function(options, utils, modules) {
 
         this.name = this[$data].slug;
 
+        this[$processBuild] = function(build) {
+          let job = modules.job(org, this, new this[$build](build));
+          build.jobs = build.jobs.map(j => new job(j));
+          return build;
+        }
+
         this[$baseURL] = `organizations/${this[$org].name}/projects/${this.name}`;
       }
 
@@ -25,14 +33,19 @@ export default function(options, utils, modules) {
         utils.req("DELETE", this[$baseURL], null, callback);
       }
 
-      getBuild(number, callback) {
-        console.log(`${this[$baseURL]}/builds/${number}`);
-        utils.req("GET", `${this[$baseURL]}/builds/${number}`, null, (err, result) => {
+      listBuilds(callback) {
+        utils.req("GET", `${this[$baseURL]}/builds`, null, (err, builds) => {
           if(err) return callback(err);
-          let build = new this[$build](result);
-          let job = modules.job(org, this, build);
-          build.jobs = build.jobs.map(j => new job(j));
-          return callback(null, build);
+          builds = builds.map(this[$processBuild].bind(this));
+          utils.wrapResult(this[$build], callback)(null, builds);
+        });
+      }
+
+      getBuild(number, callback) {
+        utils.req("GET", `${this[$baseURL]}/builds/${number}`, null, (err, build) => {
+          if(err) return callback(err);
+          build = this[$processBuild].bind(this)(build);
+          utils.wrapResult(this[$build], callback)(null, build);
         });
       }
 

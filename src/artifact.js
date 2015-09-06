@@ -24,6 +24,15 @@ export default function(options, utils, modules) {
 
         this[$baseURL] = `organizations/${this[$org].name}/projects/${this[$project].name}/builds/${this[$build].number}/artifacts/${this.id}`;
       }
+
+      download(callback) {
+        utils.req("GET", `${this[$buildURL]}/download`, null, function(err, result) {
+          if(err) return callback(err);
+          let stream = request(result.url);
+          return callback(null, stream);
+        });
+      }
+
     }
 
     return Artifact;
