@@ -5,6 +5,7 @@ import project      from "./project";
 import build        from "./build";
 import agent        from "./agent";
 import job          from "./job";
+import artifact     from "./artifact";
 
 export default function(options = {}) {
 
@@ -27,6 +28,7 @@ export default function(options = {}) {
   modules.build        = build(options, utils, modules);
   modules.agent        = agent(options, utils, modules);
   modules.job          = job(options, utils, modules);
+  modules.artifact     = artifact(options, utils, modules);
 
   function listOrganisations(callback) {
     utils.req("GET", "organizations", null, utils.wrapResult(modules.organisation, callback));
