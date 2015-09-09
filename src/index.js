@@ -1,5 +1,5 @@
 
-import utils        from "./utils";
+import Utils        from "./utils";
 import organisation from "./organisation";
 import project      from "./project";
 import build        from "./build";
@@ -19,7 +19,7 @@ export default function(options = {}) {
     throw new Error("Either an accessToken, or email + password is required to use the Buildkite API");
   }
 
-  utils = utils(options);
+  const utils = Utils(options);
 
   let modules = {};
 

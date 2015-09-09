@@ -42,6 +42,8 @@ export default function(options) {
   function wrapResult(Fn, callback) {
     return function(err, result) {
       if(err) return callback(err);
+      if(result && result.error) return callback(result);
+      if(!result || (result && result.message == 'Not Found')) return callback();
       if(Array.isArray(result)) {
         return callback(null, result.map(r => new Fn(r)));
       } else {

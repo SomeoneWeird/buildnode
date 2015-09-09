@@ -22,7 +22,7 @@ export default function(options, utils, modules) {
 
         this[$processBuild] = function(build) {
           let job = modules.job(org, this, new this[$build](build));
-          build.jobs = build.jobs.map(j => new job(j));
+          build.jobs = (build.jobs||[]).map(j => new job(j));
           return build;
         }
 

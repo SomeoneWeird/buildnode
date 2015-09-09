@@ -25,11 +25,11 @@ export default function(options, utils, modules) {
       }
 
       cancel(callback) {
-        utils.req("PUT", `${this[$baseURL]}/cancel`, null, utils.wrapResult(this[$build], callback));
+        utils.req("PUT", `${this[$baseURL]}/cancel`, null, utils.wrapResult(Build, callback));
       }
 
       rebuild(callback) {
-        utils.req("PUT", `${this[$baseURL]}/rebuild`, null, utils.wrapResult(this[$build], callback));
+        utils.req("PUT", `${this[$baseURL]}/rebuild`, null, utils.wrapResult(Build, callback));
       }
 
       listArtifacts(callback) {
