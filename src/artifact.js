@@ -1,28 +1,34 @@
 
 export default function(options, utils, modules) {
   
-  const $data    = Symbol("build");
-  const $org     = Symbol("org");
-  const $project = Symbol("project");
-  const $build   = Symbol("build");
-  const $job     = Symbol("job");
-  const $baseURL = Symbol("baseURL");
+  const $data     = Symbol("build");
+  const $org      = Symbol("org");
+  const $pipeline = Symbol("pipeline");
+  const $build    = Symbol("build");
+  const $job      = Symbol("job");
+  const $baseURL  = Symbol("baseURL");
 
-  return function(org, project, build, job) {
+  const fieldMap = {
+    id: 'id',
+    jobId: 'job_id',
+    path: 'path',
+    size: 'file_size',
+    hash: 'sha1sum'
+  }
+
+  return function(org, pipeline, build, job) {
 
     class Artifact {
 
       constructor(data) {
-        this[$data]    = data;
-        this[$project] = project;
-        this[$build]   = build;
-        this[$job]     = job;
+        this[$data]     = data;
+        this[$pipeline] = pipeline;
+        this[$build]    = build;
+        this[$job]      = job;
 
-        [ 'id', 'job_id', 'path', 'file_size', 'sha1sum' ].forEach(k => {
-          this[k] = this[$data][k];
-        });
+        utils.mapFields.call(this, data, fieldMap);
 
-        this[$baseURL] = `organizations/${this[$org].name}/projects/${this[$project].name}/builds/${this[$build].number}/artifacts/${this.id}`;
+        this[$baseURL] = `organizations/${this[$org].name}/pipelines/${this[$pipeline].slug}/builds/${this[$build].number}/artifacts/${this.id}`;
       }
 
       download(callback) {

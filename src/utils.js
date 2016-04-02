@@ -5,7 +5,7 @@ export default function(options) {
 
   let {
     domain = "api.buildkite.com",
-    version = "v1",
+    version = "v2",
     secure = true,
     accessToken,
     email,
@@ -27,13 +27,15 @@ export default function(options) {
 
     let url = `${baseUrl}${endpoint}`;
 
-    request({
+    let req = {
       url,
       auth,
       body,
       method,
       json: true
-    }, function(err, data, body) {
+    }
+
+    request(req, function(err, data, body) {
       return callback(err, body);
     });
 
@@ -52,9 +54,20 @@ export default function(options) {
     }
   }
 
+  function mapFields(data, map) {
+    for(let k in map) {
+      if(typeof map[k] === 'function') {
+        this[k] = map[k](data)
+      } else {
+        this[k] = data[map[k]];
+      }
+    }
+  }
+
   return {
     req,
-    wrapResult
+    wrapResult,
+    mapFields
   };
 
 }

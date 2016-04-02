@@ -3,25 +3,38 @@ export default function(options, utils, modules) {
 
   const $data     = Symbol("data");
   const $org      = Symbol("org");
-  const $project  = Symbol("project");
+  const $pipeline = Symbol("pipeline");
   const $artifact = Symbol("artifact");
+  const $job      = Symbol("job");
   const $baseURL  = Symbol("baseURL");
 
-  return function(org, project) {
+  return function(org, pipeline) {
 
     class Build {
 
       constructor(data) {
         this[$data]     = data;
         this[$org]      = org;
-        this[$project]  = project;
-        this[$artifact] = modules.artifact(org, project, this);
+        this[$pipeline] = pipeline;
+        this[$artifact] = modules.artifact(org, pipeline, this);
+        this[$job]      = modules.job(org, pipeline, this);
 
-        [ 'id', 'number', 'jobs', 'state', 'message', 'branch' ].forEach(k => {
-          this[k] = this[$data][k];
-        });
+        console.lo
 
-        this[$baseURL] = `organizations/${this[$org].name}/projects/${this[$project].name}/builds/${this.number}`;
+        const fieldMap = {
+          id: 'id',
+          number: 'id',
+          state: 'state',
+          message: 'message',
+          branch: 'branch',
+          jobs: (data) => {
+            return data.jobs.map(j => new this[$job](j));
+          }
+        }
+
+        utils.mapFields.call(this, data, fieldMap);
+
+        this[$baseURL] = `organizations/${this[$org].name}/pipelines/${this[$pipeline].slug}/builds/${this.number}`;
       }
 
       cancel(callback) {

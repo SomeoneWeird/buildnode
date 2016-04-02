@@ -1,7 +1,7 @@
 
 import Utils        from "./utils";
 import organisation from "./organisation";
-import project      from "./project";
+import pipeline     from "./pipeline";
 import build        from "./build";
 import agent        from "./agent";
 import job          from "./job";
@@ -24,7 +24,7 @@ export default function(options = {}) {
   let modules = {};
 
   modules.organisation = organisation(options, utils, modules);
-  modules.project      = project(options, utils, modules);
+  modules.pipeline     = pipeline(options, utils, modules);
   modules.build        = build(options, utils, modules);
   modules.agent        = agent(options, utils, modules);
   modules.job          = job(options, utils, modules);

@@ -1,33 +1,33 @@
 
 export default function(options, utils, modules) {
 
-  const $data    = Symbol("data");
-  const $project = Symbol("project");
-  const $agent   = Symbol("agent");
-  const $baseURL = Symbol("baseURL");
+  const $data     = Symbol("data");
+  const $pipeline = Symbol("pipeline");
+  const $agent    = Symbol("agent");
+  const $baseURL  = Symbol("baseURL");
 
   class Organisation {
 
     constructor(data) {
-      this[$data]    = data;
-      this[$project] = modules.project(this);
-      this[$agent]   = modules.agent(this);
+      this[$data]     = data;
+      this[$pipeline] = modules.pipeline(this);
+      this[$agent]    = modules.agent(this);
 
       this.name = this[$data].slug;
 
       this[$baseURL] = `organizations/${this.name}`;
     }
 
-    listProjects(callback) {
-      utils.req("GET", `${this[$baseURL]}/projects`, null, utils.wrapResult(this[$project], callback));
+    listPipelines(callback) {
+      utils.req("GET", `${this[$baseURL]}/pipelines`, null, utils.wrapResult(this[$pipeline], callback));
     }
 
-    getProject(name, callback) {
-      utils.req("GET", `${this[$baseURL]}/projects/${name}`, null, utils.wrapResult(this[$project], callback));
+    getPipeline(name, callback) {
+      utils.req("GET", `${this[$baseURL]}/pipelines/${name}`, null, utils.wrapResult(this[$pipeline], callback));
     }
 
-    createProject(data, callback) {
-      utils.req("POST", `${this[$baseURL]}/projects`, data, utils.wrapResult(this[$project], callback));
+    createPipeline(data, callback) {
+      utils.req("POST", `${this[$baseURL]}/pipelines`, data, utils.wrapResult(this[$pipeline], callback));
     }
 
     listAgents(callback) {
@@ -36,12 +36,6 @@ export default function(options, utils, modules) {
 
     getAgent(id, callback) {
       utils.req("GET", `${this[$baseURL]}/agents/${id}`, null, utils.wrapResult(this[$agent], callback));
-    }
-
-    createAgent(name, callback) {
-      utils.req("POST", `${this[$baseURL]}/agents`, {
-        name
-      }, utils.wrapResult(this[$agent], callback));
     }
 
   }

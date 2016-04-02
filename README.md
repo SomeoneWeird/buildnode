@@ -1,69 +1,162 @@
-# node-buildkite
-Node module for Buildkite APIs
+# buildnode
+Node module for Buildkites API
 
 # Installation
 
 ```
-npm install buildkite
+npm install buildnode
 ```
 
 # Instantiation
 
-## buildkite(options)
+## buildnode(options)
+
+You need to specify one of **accessToken** or **email and password**.
+
+## Buildnode
+
+### Methods
+
+#### listOrganisations(callback)
+
+Lists all organisations that your credentials have access to.
+
+#### getOrganisation(name, callback)
+
+Returns an organisation class for `name`
 
 ## Organisation
 
-#### organisation.name
-#### organisation#listProjects(callback)
-#### organisation#getProject(name, callback)
-#### organisation#createProject(data, callback)
-#### organisation#listAgents(callback)
-#### organisation#getAgent(id, callback)
-#### organisation#createAgent(name, callback)
+### Fields
+
+* name: (string) The organisation name
+
+#### Methods
+
+#### listPipelines(callback)
+
+List all pipelines available under this organisation.
+
+#### getPipeline(name, callback)
+
+Returns an instance of `pipeline` for `name`
+
+#### createPipeline(data, callback)
+
+Creates a new pipeline under this organisation.
+
+#### listAgents(callback)
+
+List all available agents.
+
+#### getAgent(id, callback)
+
+Returns an instance of `agent` for `id`
 
 ## Agent
 
-#### agent.id
-#### agent.name
-#### agent.connection_state
-#### agent.ip_address
-#### agent.version
-#### agent.meta_data
-#### agent#top(callback)
+### Fields
 
-## Project
+* id: (string) ID of the agent
+* name: (string) Name of the agent
+* ip: (string) IP of the agent
+* state: (string) Connection state for the agent
+* version: (string) Agent version
+* metaData: (object) Agent metadata
 
-#### project.name
-#### project#delete(callback)
-#### project#listBuilds(callback)
-#### project#getBuild(number, callback)
-#### project#createBuild(data, callback)
+### Methods
+
+#### stop(callback)
+
+Stops the agent.
+
+## Pipeline
+
+### Fields
+
+* id: (string) ID of the pipeline
+* name: (string) Name of the pipeline
+* slug: (string) Slug for the pipeline
+
+### Methods
+
+#### delete(callback)
+
+Delete this pipeline.
+
+#### update(data, callback)
+
+Update the pipeline.
+
+#### listBuilds(callback)
+
+Returns an array of instances of `build` for this pipeline.
+
+#### getBuild(number, callback)
+
+Returns an instance of `build` for build `number`.
+
+#### createBuild(data, callback)
+
+Create a new build.
 
 ## Build
 
-#### build.id
-#### build.number
-#### build.jobs
-#### build.state
-#### build.message
-#### build.branch
-#### build#cancel(callback)
-#### build#rebuild(callback)
-#### build#listArtifacts(callback)
-#### build#getArtifact(id, callback)
+### Fields
+
+* id: (string) ID of the build
+* number: (number) Build number
+* jobs: ([Job]) Jobs for this build
+* state: (string) State of the build
+* message: (string) Build message
+* branch: (string) Build branch
+
+### Methods
+
+#### cancel(callback)
+
+Cancel an in-progress build.
+
+#### rebuild(callback)
+
+Rebuild a build.
+
+#### listArtifacts(callback)
+
+Returns an array of instances of `artifact` for this build.
+
+#### getArtifact(id, callback)
+
+Return an instance of `artifact` for `id`
 
 ## Job
 
-#### job.id
-#### job#unblock(callback)
-#### job#getLog(callback)
-#### job#listArtifacts(callback)
+### Fields
+
+* id: (string) ID of the job
+* name: (string) Name of the job
+* command: (string) Command for the job
+
+### Methods
+
+#### unblock(callback)
+
+Unblocks this step.
+
+#### getLog(callback)
+
+Returns the command output for this step.
+
+#### listArtifacts(callback)
+
+Returns an array of instances of `artifact` for this job.
 
 ## Artifact
 
-#### artifact.id
-#### artifact.job_id
-#### artifact.path
-#### artifact.file_size
-#### artifact.sha1sum
-#### artifact#download(callback)
+### Fields
+
+* id: (string) ID of the artifact
+* jobId: (string) ID of the job that uploaded this artifact
+* path: (string) Path to the uploaded artifact
+* size: (string) Size of the artifact
+* hash: (string) Hash of the artifact
