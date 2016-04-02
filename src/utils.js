@@ -1,31 +1,29 @@
 
-import request from "request";
+import request from 'request'
 
-export default function(options) {
-
+export default function (options) {
   let {
-    domain = "api.buildkite.com",
-    version = "v2",
-    secure = true,
+    domain,
+    version,
+    secure,
     accessToken,
     email,
     password
-  } = options;
+  } = options
 
-  let auth = {};
+  let auth = {}
 
-  if(accessToken) {
-    auth.bearer = accessToken;
+  if (accessToken) {
+    auth.bearer = accessToken
   } else {
-    auth.user = email;
-    auth.pass = password;
+    auth.user = email
+    auth.pass = password
   }
 
-  let baseUrl = `http${secure == true ? 's' : ''}://${domain}/${version}/`;
+  let baseUrl = `http${secure === true ? 's' : ''}://${domain}/${version}/`
 
-  function req(method, endpoint, body, callback) {
-
-    let url = `${baseUrl}${endpoint}`;
+  function req (method, endpoint, body, callback) {
+    let url = `${baseUrl}${endpoint}`
 
     let req = {
       url,
@@ -35,31 +33,30 @@ export default function(options) {
       json: true
     }
 
-    request(req, function(err, data, body) {
-      return callback(err, body);
-    });
-
+    request(req, function (err, data, body) {
+      return callback(err, body)
+    })
   }
 
-  function wrapResult(Fn, callback) {
-    return function(err, result) {
-      if(err) return callback(err);
-      if(result && result.error) return callback(result);
-      if(!result || (result && result.message == 'Not Found')) return callback();
-      if(Array.isArray(result)) {
-        return callback(null, result.map(r => new Fn(r)));
+  function wrapResult (Fn, callback) {
+    return function (err, result) {
+      if (err) return callback(err)
+      if (result && result.error) return callback(result)
+      if (!result || (result && result.message === 'Not Found')) return callback()
+      if (Array.isArray(result)) {
+        return callback(null, result.map((r) => new Fn(r)))
       } else {
-        return callback(null, new Fn(result));
+        return callback(null, new Fn(result))
       }
     }
   }
 
-  function mapFields(data, map) {
-    for(let k in map) {
-      if(typeof map[k] === 'function') {
+  function mapFields (data, map) {
+    for (let k in map) {
+      if (typeof map[k] === 'function') {
         this[k] = map[k](data)
       } else {
-        this[k] = data[map[k]];
+        this[k] = data[map[k]]
       }
     }
   }
@@ -68,6 +65,5 @@ export default function(options) {
     req,
     wrapResult,
     mapFields
-  };
-
+  }
 }
