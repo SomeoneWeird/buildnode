@@ -19,7 +19,7 @@ export default function (options, utils, modules) {
 
         const fieldMap = {
           id: 'id',
-          number: 'id',
+          number: 'number',
           state: 'state',
           message: 'message',
           branch: 'branch',
