@@ -160,3 +160,9 @@ Returns an array of instances of `artifact` for this job.
 * path: (string) Path to the uploaded artifact
 * size: (string) Size of the artifact
 * hash: (string) Hash of the artifact
+
+### Methods
+
+#### download(callback)
+
+Returns a stream for the artifact
