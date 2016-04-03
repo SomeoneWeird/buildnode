@@ -22,7 +22,7 @@ export default function (options, utils, modules) {
 
         utils.mapFields.call(this, data, fieldMap)
 
-        this.baseURL = `organizations/${this.organization.name}/pipelines/${this.pipeline.name}/builds/${this.build.number}/jobs/${this.id}`
+        this.baseURL = `organizations/${this.organization.slug}/pipelines/${this.pipeline.slug}/builds/${this.build.number}/jobs/${this.id}`
       }
 
       get data () {

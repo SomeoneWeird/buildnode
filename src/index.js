@@ -39,16 +39,16 @@ export default function (options = {}) {
   modules.job = job(options, utils, modules)
   modules.artifact = artifact(options, utils, modules)
 
-  function listorganizations (callback) {
+  function listOrganizations (callback) {
     utils.req('GET', 'organizations', null, utils.wrapResult(modules.organization, callback))
   }
 
-  function getorganization (name, callback) {
+  function getOrganization (name, callback) {
     utils.req('GET', `organizations/${name}`, null, utils.wrapResult(modules.organization, callback))
   }
 
-  modules.listorganizations = listorganizations
-  modules.getorganization = getorganization
-
-  return modules
+  return {
+    listOrganizations,
+    getOrganization
+  }
 }

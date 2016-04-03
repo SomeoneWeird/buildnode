@@ -4,6 +4,12 @@ export default function (options, utils, modules) {
   const $pipeline = Symbol('pipeline')
   const $agent = Symbol('agent')
 
+  const fieldMap = {
+    name: 'name',
+    slug: 'slug',
+    url: 'web_url'
+  }
+
   return class Organization {
 
     constructor (data) {
@@ -11,9 +17,9 @@ export default function (options, utils, modules) {
       this[$pipeline] = modules.pipeline(this)
       this[$agent] = modules.agent(this)
 
-      this.name = this[$data].slug
+      utils.mapFields.call(this, data, fieldMap)
 
-      this.baseURL = `organizations/${this.name}`
+      this.baseURL = `organizations/${this.slug}`
     }
 
     get data () {
