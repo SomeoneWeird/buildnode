@@ -1,8 +1,6 @@
 
 export default function (options, utils, modules) {
   const $data = Symbol('data')
-  const $org = Symbol('org')
-  const $baseURL = Symbol('baseURL')
 
   const fieldMap = {
     id: 'id',
@@ -20,21 +18,27 @@ export default function (options, utils, modules) {
     }
   }
 
-  return function (org) {
+  function Agent (org) {
     return class Agent {
 
       constructor (data) {
         this[$data] = data
-        this[$org] = org
+
+        this.organization = org
 
         utils.mapFields.call(this, data, fieldMap)
 
-        this[$baseURL] = `organizations/${this[$org].name}/agents/${this.id}`
+        this.baseURL = `organizations/${this.organization.name}/agents/${this.id}`
+      }
+
+      get data () {
+        return this[$data]
       }
 
       stop (callback) {
-        utils.req('PUT', `${this[$baseURL]}/stop`, null, callback)
+        utils.req('PUT', `${this.baseURL}/stop`, null, callback)
       }
     }
   }
+  return Agent
 }

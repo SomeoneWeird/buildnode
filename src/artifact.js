@@ -2,11 +2,6 @@ import request from 'request'
 
 export default function (options, utils, modules) {
   const $data = Symbol('build')
-  const $org = Symbol('org')
-  const $pipeline = Symbol('pipeline')
-  const $build = Symbol('build')
-  const $job = Symbol('job')
-  const $baseURL = Symbol('baseURL')
 
   const fieldMap = {
     id: 'id',
@@ -16,22 +11,28 @@ export default function (options, utils, modules) {
     hash: 'sha1sum'
   }
 
-  return function (org, pipeline, build, job) {
+  function Artifact (org, pipeline, build, job) {
     return class Artifact {
 
       constructor (data) {
         this[$data] = data
-        this[$pipeline] = pipeline
-        this[$build] = build
-        this[$job] = job
+
+        this.organization = org
+        this.pipeline = pipeline
+        this.build = build
+        this.job = job
 
         utils.mapFields.call(this, data, fieldMap)
 
-        this[$baseURL] = `organizations/${this[$org].name}/pipelines/${this[$pipeline].slug}/builds/${this[$build].number}/artifacts/${this.id}`
+        this.baseURL = `organizations/${this.organization.name}/pipelines/${this.pipeline.slug}/builds/${this.build.number}/artifacts/${this.id}`
+      }
+
+      get data () {
+        return this[$data]
       }
 
       download (callback) {
-        utils.req('GET', `${this[$baseURL]}/download`, null, function (err, result) {
+        utils.req('GET', `${this.baseURL}/download`, null, function (err, result) {
           if (err) {
             return callback(err)
           }
@@ -41,4 +42,5 @@ export default function (options, utils, modules) {
       }
     }
   }
+  return Artifact
 }

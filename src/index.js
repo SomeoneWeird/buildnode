@@ -47,8 +47,8 @@ export default function (options = {}) {
     utils.req('GET', `organizations/${name}`, null, utils.wrapResult(modules.organisation, callback))
   }
 
-  return {
-    listOrganisations,
-    getOrganisation
-  }
+  modules.listOrganisations = listOrganisations
+  modules.getOrganisation = getOrganisation
+
+  return modules
 }

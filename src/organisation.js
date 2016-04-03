@@ -3,7 +3,6 @@ export default function (options, utils, modules) {
   const $data = Symbol('data')
   const $pipeline = Symbol('pipeline')
   const $agent = Symbol('agent')
-  const $baseURL = Symbol('baseURL')
 
   return class Organisation {
 
@@ -14,27 +13,31 @@ export default function (options, utils, modules) {
 
       this.name = this[$data].slug
 
-      this[$baseURL] = `organizations/${this.name}`
+      this.baseURL = `organizations/${this.name}`
+    }
+
+    get data () {
+      return this[$data]
     }
 
     listPipelines (callback) {
-      utils.req('GET', `${this[$baseURL]}/pipelines`, null, utils.wrapResult(this[$pipeline], callback))
+      utils.req('GET', `${this.baseURL}/pipelines`, null, utils.wrapResult(this[$pipeline], callback))
     }
 
     getPipeline (name, callback) {
-      utils.req('GET', `${this[$baseURL]}/pipelines/${name}`, null, utils.wrapResult(this[$pipeline], callback))
+      utils.req('GET', `${this.baseURL}/pipelines/${name}`, null, utils.wrapResult(this[$pipeline], callback))
     }
 
     createPipeline (data, callback) {
-      utils.req('POST', `${this[$baseURL]}/pipelines`, data, utils.wrapResult(this[$pipeline], callback))
+      utils.req('POST', `${this.baseURL}/pipelines`, data, utils.wrapResult(this[$pipeline], callback))
     }
 
     listAgents (callback) {
-      utils.req('GET', `${this[$baseURL]}/agents`, null, utils.wrapResult(this[$agent], callback))
+      utils.req('GET', `${this.baseURL}/agents`, null, utils.wrapResult(this[$agent], callback))
     }
 
     getAgent (id, callback) {
-      utils.req('GET', `${this[$baseURL]}/agents/${id}`, null, utils.wrapResult(this[$agent], callback))
+      utils.req('GET', `${this.baseURL}/agents/${id}`, null, utils.wrapResult(this[$agent], callback))
     }
 
   }
