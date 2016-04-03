@@ -17,7 +17,48 @@ npm install buildnode
 
 You need to specify one of **accessToken** or **email and password**.
 
-## Buildnode
+# Examples
+
+## Rebuild latest build for a pipeline
+
+```js
+var Buildnode = require('buildnode')({
+  accessToken: "abc123"
+})
+
+var organizationName = "myOrg"
+var pipelineName = "myPipeline"
+
+// Fetch the organization
+Buildnode.getOrganization(organizationName, function (err, myOrg) {
+  if (err) {
+    throw err
+  }
+  // Check if we got anything
+  if (!myOrg) {
+    throw new Error('Error fetching organization')
+  }
+  // Fetch the pipeline
+  myOrg.getPipeline(pipelineName, function (err, myPipeline) {
+    if (err) {
+      throw err
+    }
+    // Check we fetched the pipeline
+    if (!myPipeline) {
+      throw new Error('Invalid pipeline name')
+    }
+    myPipeline.listBuilds(function (err, builds) {
+      if (err) {
+        throw err
+      }
+      // First entry is latest build
+      builds[0].rebuild()
+    })
+  })
+})
+```
+
+## API
 
 ### Methods
 
