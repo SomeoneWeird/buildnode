@@ -1,6 +1,10 @@
 # buildnode
 Node module for Buildkites API
 
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+[![npm-downloads-month](https://img.shields.io/npm/dm/buildnode.svg)](https://www.npmjs.com/package/buildnode)
+[![npm-version](https://img.shields.io/npm/v/buildnode.svg)](https://www.npmjs.com/package/buildnode)
+
 # Installation
 
 ```
