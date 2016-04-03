@@ -4,7 +4,7 @@ export default function (options, utils, modules) {
   const $pipeline = Symbol('pipeline')
   const $agent = Symbol('agent')
 
-  return class Organisation {
+  return class Organization {
 
     constructor (data) {
       this[$data] = data

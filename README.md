@@ -17,25 +17,25 @@ You need to specify one of **accessToken** or **email and password**.
 
 ### Methods
 
-#### listOrganisations(callback)
+#### listOrganizations(callback)
 
-Lists all organisations that your credentials have access to.
+Lists all organizations that your credentials have access to.
 
-#### getOrganisation(name, callback)
+#### getOrganization(name, callback)
 
-Returns an organisation class for `name`
+Returns an organization class for `name`
 
-## Organisation
+## Organization
 
 ### Fields
 
-* name: (string) The organisation name
+* name: (string) The organization name
 
 #### Methods
 
 #### listPipelines(callback)
 
-List all pipelines available under this organisation.
+List all pipelines available under this organization.
 
 #### getPipeline(name, callback)
 
@@ -43,7 +43,7 @@ Returns an instance of `pipeline` for `name`
 
 #### createPipeline(data, callback)
 
-Creates a new pipeline under this organisation.
+Creates a new pipeline under this organization.
 
 #### listAgents(callback)
 
