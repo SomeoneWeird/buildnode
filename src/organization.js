@@ -26,8 +26,13 @@ export default function (options, utils, modules) {
       return this[$data]
     }
 
-    listPipelines (callback) {
-      utils.req('GET', `${this.baseURL}/pipelines`, null, utils.wrapResult(this[$pipeline], callback))
+    listPipelines(callback, page=1, pipelines=[]) {
+      utils.req('GET', `${this.baseURL}/pipelines/?per_page=100&page=${page}`, null, utils.wrapResult(this[$pipeline], (err, response) => {
+        pipelines = pipelines.concat(response)
+        return response.length < 100
+          ? callback(err, pipelines)
+          : this.listPipelines(callback, page + 1, pipelines)
+      }))
     }
 
     getPipeline (name, callback) {
